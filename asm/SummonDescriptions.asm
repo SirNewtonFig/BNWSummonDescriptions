@@ -2,7 +2,7 @@ hirom
 
 !freeC3_A = $C33BDE   ; 18 bytes, we'll use 17 :)
 ; !freeC3_B = $C3F46B   ; 21 bytes, just what we need :O
-!freeC3_B = $C38777   ; 29 bytes, we'll use 17 >.>
+!freeC3_B = $C38777   ; 29 bytes, we'll use 24 >.>
 
 !freeXL = $C48270     ; big ol' chunk of freespace :D
 !freeXLbank = $C4    ; if freeXL changes, change this accordingly
@@ -35,6 +35,7 @@ SummonDescription:    ; Load Esper summon description
   STA $ED             ; Set text loc HB
   LDA #$10
   TRB $45             ; Description: On
+  LDX #$3940          ; Batshit compatibility shim for esper restrictions handler
   RTS
 
 org $C358B9
