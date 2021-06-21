@@ -1,7 +1,6 @@
 hirom
 
 !freeC3_A = $C33BDE   ; 18 bytes, we'll use 17 :)
-; !freeC3_B = $C3F46B   ; 21 bytes, just what we need :O
 !freeC3_B = $C38777   ; 29 bytes, we'll use 24 >.>
 
 !freeXL = $C48270     ; big ol' chunk of freespace :D
@@ -35,8 +34,13 @@ SummonDescription:    ; Load Esper summon description
   STA $ED             ; Set text loc HB
   LDA #$10
   TRB $45             ; Description: On
-  LDX #$3940          ; Batshit compatibility shim for esper restrictions handler
-  RTS
+  LDX #$3940          ; Batshit compatibility shim for esper restrictions handler.
+  RTS                 ;   It expects (in a roundabout way) this value to be in the X
+                      ;   register in the event a character tries to equip an Esper
+                      ;   that doesn't belong to them, because it needs an offset to
+                      ;   a region of memory where there will be a large swath of
+                      ;   values below #$80 /shrug
+  
 
 org $C358B9
   JSL InitEsperDataSlice
@@ -94,7 +98,7 @@ Odin: db "Non-elemental dmg - all foes|Stamina-based; ignores def.",$00
 Loki: db $00
 Bahamut: db "Non-elemental dmg - all foes|Ignores def.",$00
 Crusader: db "Dark damage - all foes",$00
-Ragnarok: db "Non-elemental dmg - one foe|(Damage = 9;999)",$00
+Ragnarok: db "9999 damage - one foe",$00
 Alexandr: db "Holy damage - all foes",$00
 Kirin: db "Cures HP - party|Revives fallen allies",$00
 Zoneseek: db "Sets `Shell^ - party",$00
