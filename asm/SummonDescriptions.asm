@@ -34,7 +34,6 @@ SummonDescription:    ; Load Esper summon description
   STA $ED             ; Set text loc HB
   LDA #$10
   TRB $45             ; Description: On
-  LDX #$3940          ; Batshit compatibility shim for esper restrictions handler.
   RTS                 ;   It expects (in a roundabout way) this value to be in the X
                       ;   register in the event a character tries to equip an Esper
                       ;   that doesn't belong to them, because it needs an offset to

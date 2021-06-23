@@ -18,11 +18,11 @@ org $C3F3F3
 
 org $C35CE2
   SPLabel:    dw #$47B1 : db "SP ",$00
-  CostLabel:  dw #$4437 : db "Learn",$00
+  LearnLabel: dw #$4437 : db "Learn",$00
   SPMax:      dw #$47BB : db "/30",$00
 
 org $C35B0A         ; Slight adjustments to Synchysi's code here
-  JMP MPCost        ; changed from JSR, changed destination
+  JMP MPCost        ; was JSR Learn_Chk
   SPCost:
 
 org $C359CF         ; End of drawing Esper name
@@ -38,9 +38,9 @@ org $C3F752         ; End of Blue_Bank_Txt
 org !free
 
 FinishSP:
-  LDA #$8F
+  LDA #$8F          ; P
   STA $2180
-  STZ $2180
+  STZ $2180         ; EOS
   JMP $7FD9         ; String done, now print it
 
 MPCost:
@@ -58,13 +58,13 @@ MPCost:
   STA $2180
   LDA $F9           ; ones digit
   STA $2180
-  LDA #$FF
+  LDA #$FF          ; space
   STA $2180
   LDA #$8C          ; M
   STA $2180
   LDA #$8F          ; P
   STA $2180
-  LDA #$FF
+  LDA #$FF          ; 3 spaces
   STA $2180
   STA $2180
   STA $2180
@@ -73,25 +73,25 @@ MPCost:
   BCC .unknown
 .known:
   PLA
-  JMP Known
+  JMP Known         ; print a checkmark
 .unknown:
   PLA
   JSR $04E0         ; Turns A into displayable digits
-  JMP SPCost        ; output SP cost
+  JMP SPCost        ; go back to where we sliced in and output SP cost
 
 Known:  
-  LDA #$FF
+  LDA #$FF          ; 2 spaces to center checkmark
   STA $2180
   STA $2180
   
-  LDA #$CF
+  LDA #$CF          ; checkmark
   STA $2180
   
-  LDA #$FF
+  LDA #$FF          ; 2 more spaces to overwrite stale text in this slot
   STA $2180
   STA $2180
 
-  STZ $2180
+  STZ $2180         ; EOS
   JMP $7FD9
 
 NewLabels:
@@ -101,26 +101,22 @@ NewLabels:
 ; the white, etc.
 
   JSR $04B6         ; Write banked SP to screen (relocated)
-  PHX
-  PHY
   LDY #SPMax
   JSR $02F9         ; Print "/30" with SP bank
   LDA #$24
   STA $29           ; Set text color to blue
-  LDY #CostLabel
-  JSR $02F9         ; Print "Cost"
+  LDY #LearnLabel
+  JSR $02F9         ; Print "Learn"
   LDA #$20
   STA $29           ; Set text color back to white
   LDA #$00
   XBA               ; Wipe HB of A
   LDA $99
-  PLY
-  PLX
   RTS
 
 DrawEsperMP:
   LDA #$FF
-  STA $2180
+  STA $2180         ; 3 spaces
   STA $2180
   STA $2180
   LDA $99           ; Current Esper
@@ -135,11 +131,11 @@ DrawEsperMP:
   STA $2180
   LDA $F9           ; ones digit
   STA $2180
-  LDA #$FF
+  LDA #$FF          ; space
   STA $2180
-  LDA #$8C
+  LDA #$8C          ; M
   STA $2180
-  LDA #$8F
+  LDA #$8F          ; P
   STA $2180
-  STZ $2180
+  STZ $2180         ; EOS
   RTS
