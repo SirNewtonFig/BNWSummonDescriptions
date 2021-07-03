@@ -39,10 +39,24 @@ SummonDescription:    ; Load Esper summon description
                       ;   that doesn't belong to them, because it needs an offset to
                       ;   a region of memory where there will be a large swath of
                       ;   values below #$80 /shrug
-  
+
 
 org $C358B9
   JSL InitEsperDataSlice
+
+
+; The code, pointers, and text in !freeXL below is in a region
+; of the ROM usually utilized for graphics data, and it just so
+; happens that the Esper summon drawer in combat has some sort of
+; label in it that points to this region of the ROM for its glyphs.
+; It is normally invisible, since this region is empty, but since
+; I added a bunch of stuff here, it ends up displaying a couple of
+; tiles of gibberish instead. This change just prevents these tiles
+; from displaying at all.
+
+org $C2E092           
+  db $03,$8C,$03,$8F,$FF,$16,$00,$00         
+    ; 03  2C  03  2F  FF  16  00  00
 
 org !freeXL
 
@@ -110,4 +124,3 @@ Fenrir: db "Sets `Image^ - party",$00
 Starlet: db "Cures HP to max - party|Lifts all bad statuses",$00
 Phoenix: db "Revives fallen allies - party|(HP = max)",$00
 
-warnpc $C487BF
