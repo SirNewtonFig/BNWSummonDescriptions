@@ -4,17 +4,20 @@ table c3.tbl,rtl
 
 !free = $C3FD08
 
-org $C3F431
-  dw #$470F         ; Position EL bank label 2 chars left
-
-org $C3F41B
-  dw #$47A9         ; Position EL bank 2 chars left
-
 org $C3599D
   db $10,$B8        ; Reposition EL bonus cursor
 
+org $C3F431
+  dw #$470F         ; Position EL bonus label 2 chars left
+
+org $C35A4C
+  db #$0B           ; Remove 2 spaces between label and bonus
+
 org $C3F3F3
-  dw #$4791         ; Position EL bank 2 chars left
+  dw #$4791         ; Position EL bank label 2 chars left
+
+org $C3F41B
+  dw #$47A9         ; Position EL bank 2 chars left
 
 org $C35CE2
   SPLabel:    dw #$47B1 : db "SP ",$00
